@@ -6,7 +6,6 @@ public class Duke {
     private static final int MAX_TASK = 100;
 
     // List of all tasks
-    //private static String[] allTasks;
     private static Task[] Tasks = new Task[MAX_TASK];
 
     // Total number of tasks in the list
@@ -70,6 +69,7 @@ public class Duke {
     }
 
     private static void displayList() {
+        System.out.println("Here are the tasks in your list:");
         for (int i=0; i<count; i++) {
             int taskNumber = i + 1;
             Task task = Tasks[i];
@@ -81,7 +81,8 @@ public class Duke {
     public static void setAsDone(int taskNumber){
         Task task = Tasks[taskNumber-1];
         task.setAsDone();
-        System.out.println("Nice! I've marked this task as done:\n" + "  " + task.getStatusIcon() + " " + task.description);
+        System.out.println("Nice! I've marked this task as done:\n"
+                + "  " + task.getStatusIcon() + " " + task.description);
     }
 
     private static void exitProgram() {
