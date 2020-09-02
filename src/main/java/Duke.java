@@ -6,23 +6,18 @@ public class Duke {
     private static final int MAX_TASK = 100;
 
     // List of all tasks
-    private static String[] allTasks;
+    //private static String[] allTasks;
+    private static Task[] Tasks = new Task[MAX_TASK];
 
     // Total number of tasks in the list
-    private static int count;
+    private static int count = 0;
 
     public static void main(String[] args) {
-        initTaskList();
         displayWelcomeMessage();
         while (true) {
             String userCommand = getUserInput();
             executeUserCommand(userCommand);
         }
-    }
-
-    private static void initTaskList() {
-        allTasks = new String[MAX_TASK];
-        count = 0;
     }
 
     private static void displayWelcomeMessage() {
@@ -44,33 +39,49 @@ public class Duke {
         return userCommand;
     }
 
-    private static void executeUserCommand(String userCommand) {
+    private static void executeUserCommand(String rawUserCommand) {
+        String userCommand = rawUserCommand;
+        int dividerPosition = rawUserCommand.indexOf(" ");
+        if (dividerPosition != -1) {
+            userCommand = rawUserCommand.substring(0, dividerPosition);
+        }
         switch(userCommand) {
         case "list":
             displayList();
+            break;
+        case "done":
+            int taskNumber = Integer.parseInt(rawUserCommand.substring(dividerPosition+1));
+            setAsDone(taskNumber);
             break;
         case "bye":
             exitProgram();
             break;
         default:
-            echoUserCommand(userCommand);
+            echoUserCommand(rawUserCommand);
             break;
         }
     }
 
     private static void echoUserCommand(String userCommand) {
-        allTasks[count] = userCommand;
-        System.out.println("added: " + userCommand);
+        Task task = new Task(userCommand);
+        Tasks[count] = task;
+        System.out.println("added: " + task.description);
         count++;
     }
 
     private static void displayList() {
-        int taskNum = 1;
-        String[] taskList = allTasks;
         for (int i=0; i<count; i++) {
-            System.out.println(taskNum + ". " + taskList[i]);
-            taskNum++;
+            int taskNumber = i + 1;
+            Task task = Tasks[i];
+            System.out.println(taskNumber + ". " + task.getStatusIcon() + " " + task.description);
+            taskNumber++;
         }
+    }
+
+    public static void setAsDone(int taskNumber){
+        Task task = Tasks[taskNumber-1];
+        task.setAsDone();
+        System.out.println("Nice! I've marked this task as done:\n" + "  " + task.getStatusIcon() + " " + task.description);
     }
 
     private static void exitProgram() {
