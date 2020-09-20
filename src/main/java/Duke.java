@@ -2,7 +2,6 @@ import java.util.Scanner;
 
 public class Duke {
 
-    // Maximum number of tasks that can be held
     private static final int MAX_TASK = 100;
 
     // List of all tasks
@@ -10,6 +9,8 @@ public class Duke {
 
     // Total number of tasks in the list
     private static int count = 0;
+
+    private static final Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
         displayWelcomeMessage();
@@ -33,7 +34,6 @@ public class Duke {
     }
 
     private static String getUserInput() {
-        Scanner sc = new Scanner(System.in);
         String userCommand = sc.nextLine();
         return userCommand;
     }
@@ -60,7 +60,7 @@ public class Duke {
             displayList();
             break;
         case "done":
-            int taskNumber = Integer.parseInt(rawUserCommand.substring(dividerPosition+1));
+            int taskNumber = Integer.parseInt(details);
             setAsDone(taskNumber);
             break;
         case "bye":
