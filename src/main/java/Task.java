@@ -1,8 +1,10 @@
 public class Task {
+    protected String category;
     protected String description;
     protected boolean isDone;
 
-    public Task(String description) {
+    public Task(String category, String description) {
+        this.category = category;
         this.description = description;
         this.isDone = false;
     }
@@ -14,5 +16,10 @@ public class Task {
 
     public void setAsDone() {
         this.isDone = true;
+    }
+
+    @Override
+    public String toString() {
+        return getStatusIcon() + " " + description;
     }
 }

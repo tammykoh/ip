@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Duke {
 
-     // Maximum number of tasks that can be held
+    // Maximum number of tasks that can be held
     private static final int MAX_TASK = 100;
 
     // List of all tasks
@@ -40,11 +40,22 @@ public class Duke {
 
     private static void executeUserCommand(String rawUserCommand) {
         String userCommand = rawUserCommand;
+        String details = null;
         int dividerPosition = rawUserCommand.indexOf(" ");
         if (dividerPosition != -1) {
             userCommand = rawUserCommand.substring(0, dividerPosition);
+            details = rawUserCommand.substring(dividerPosition + 1);
         }
         switch(userCommand) {
+        case "todo":
+            addToList("t", details);
+            break;
+        case "deadline":
+            addToList("d", details);
+            break;
+        case "event":
+            addToList("e", details);
+            break;
         case "list":
             displayList();
             break;
@@ -56,16 +67,39 @@ public class Duke {
             exitProgram();
             break;
         default:
-            echoUserCommand(rawUserCommand);
+            System.out.println("You have entered an invalid command. Try again.");
             break;
         }
     }
 
-    private static void echoUserCommand(String userCommand) {
-        Task task = new Task(userCommand);
-        Tasks[count] = task;
-        System.out.println("added: " + task.description);
+    private static void addToList(String category, String details) {
+        String item = null;
+        String datetime = null;
+        int dividerPosition2 = details.indexOf("/");
+        if (dividerPosition2 != -1) {
+            item = details.substring(0, dividerPosition2);
+            datetime = details.substring(dividerPosition2 + 4);
+        }
+        switch(category) {
+        case "t":
+            ToDo todo = new ToDo("t", details);
+            Tasks[count] = todo;
+            break;
+        case "d":
+            Deadline deadline = new Deadline("d", item, datetime);
+            Tasks[count] = deadline;
+            break;
+        case "e":
+            Event event = new Event("e", item, datetime);
+            Tasks[count] = event;
+            break;
+        default:
+            break;
+        }
         count++;
+        System.out.println("Got it! I've added this task:");
+        System.out.println("    " + Tasks[count-1]);
+        System.out.println("Now you have " + count + " tasks in the list");
     }
 
     private static void displayList() {
@@ -73,7 +107,7 @@ public class Duke {
         for (int i=0; i<count; i++) {
             int taskNumber = i + 1;
             Task task = Tasks[i];
-            System.out.println(taskNumber + ". " + task.getStatusIcon() + " " + task.description);
+            System.out.println("    " + taskNumber + ". " + task);
             taskNumber++;
         }
     }
@@ -82,7 +116,7 @@ public class Duke {
         Task task = Tasks[taskNumber-1];
         task.setAsDone();
         System.out.println("Nice! I've marked this task as done:\n"
-                + "  " + task.getStatusIcon() + " " + task.description);
+                + "    " + task);
     }
 
     private static void exitProgram() {
