@@ -1,3 +1,10 @@
+package duke;
+
+import duke.task.Deadline;
+import duke.task.Event;
+import duke.task.Task;
+import duke.task.ToDo;
+
 import java.util.Scanner;
 
 public class Duke {
@@ -30,7 +37,7 @@ public class Duke {
                 + "| | | | | | | |/ / _ \\\n"
                 + "| |_| | |_| |   <  __/\n"
                 + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println(logo + "Hey there! I'm Duke.\n" + "How may I be of service?");
+        System.out.println(logo + "Hey there! I'm duke.Duke.\n" + "How may I be of service?");
     }
 
     private static void displayGoodbyeMessage() {
