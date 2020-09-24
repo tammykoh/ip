@@ -12,11 +12,15 @@ public class Duke {
 
     private static final Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DukeException {
         displayWelcomeMessage();
         while (true) {
-            String userCommand = getUserInput();
-            executeUserCommand(userCommand);
+//            try {
+                String userCommand = getUserInput();
+                executeUserCommand(userCommand);
+//            } catch (InvalidInput e) {
+//                System.out.println(e.getMessage());
+//            }
         }
     }
 
@@ -38,8 +42,8 @@ public class Duke {
         return userCommand;
     }
 
-    private static void executeUserCommand(String rawUserCommand) {
-        String userCommand = rawUserCommand;
+    private static void executeUserCommand(String rawUserCommand) throws DukeException {
+        String userCommand = rawUserCommand.trim();
         String details = null;
         int dividerPosition = rawUserCommand.indexOf(" ");
         if (dividerPosition != -1) {
@@ -48,13 +52,15 @@ public class Duke {
         }
         switch(userCommand) {
         case "todo":
-            addToList("t", details);
-            break;
+            //Fallthrough
         case "deadline":
-            addToList("d", details);
-            break;
+            //Fallthrough
         case "event":
-            addToList("e", details);
+            if (dividerPosition != -1) {
+                addToList(userCommand, details);
+            } else {
+                DukeException.printEmptyDescription(userCommand);
+            }
             break;
         case "list":
             displayList();
@@ -67,34 +73,36 @@ public class Duke {
             exitProgram();
             break;
         default:
-            System.out.println("You have entered an invalid command. Try again.");
+            DukeException.printInvalidCommand();
             break;
         }
     }
 
-    private static void addToList(String category, String details) {
-        String item = null;
-        String datetime = null;
-        int dividerPosition2 = details.indexOf("/");
-        if (dividerPosition2 != -1) {
-            item = details.substring(0, dividerPosition2);
-            datetime = details.substring(dividerPosition2 + 4);
-        }
-        switch(category) {
-        case "t":
+    private static void addToList(String command, String details) {
+        if (command.equals("todo")) {
             ToDo todo = new ToDo("t", details);
             Tasks[count] = todo;
-            break;
-        case "d":
-            Deadline deadline = new Deadline("d", item, datetime);
-            Tasks[count] = deadline;
-            break;
-        case "e":
-            Event event = new Event("e", item, datetime);
-            Tasks[count] = event;
-            break;
-        default:
-            break;
+        } else {
+            String item = null;
+            String datetime = null;
+            int dividerPosition2 = details.indexOf("/");
+            if (dividerPosition2 != -1) {
+                item = details.substring(0, dividerPosition2);
+                datetime = details.substring(dividerPosition2 + 4);
+                switch(command) {
+                case "deadline":
+                    Deadline deadline = new Deadline("d", item, datetime);
+                    Tasks[count] = deadline;
+                    break;
+                case "event":
+                    Event event = new Event("e", item, datetime);
+                    Tasks[count] = event;
+                    break;
+                }
+            } else {
+                DukeException.printEmptyDetails(command);
+                return;
+            }
         }
         count++;
         System.out.println("Got it! I've added this task:");
