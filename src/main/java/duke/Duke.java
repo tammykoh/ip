@@ -5,6 +5,11 @@ import duke.task.Event;
 import duke.task.Task;
 import duke.task.ToDo;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Duke {
@@ -19,15 +24,58 @@ public class Duke {
 
     private static final Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) throws DukeException {
+    public static void main(String[] args) throws IOException {
+        File file = new File("./data/tasks.txt");
+        File folder = new File("./data");
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        if (file.exists()) {
+            readTextFile(file);
+        } else {
+            System.out.println("File does not exist. Creating file...");
+            file.createNewFile();
+        }
         displayWelcomeMessage();
         while (true) {
-//            try {
-                String userCommand = getUserInput();
-                executeUserCommand(userCommand);
-//            } catch (InvalidInput e) {
-//                System.out.println(e.getMessage());
-//            }
+            String userCommand = getUserInput();
+            executeUserCommand(userCommand);
+        }
+    }
+
+    private static void readTextFile(File file) {
+        try {
+            Scanner sf = new Scanner(file);
+            while (sf.hasNextLine()) {
+                String[] taskLine = sf.nextLine().split(" \\| ");
+                String command = taskLine[0];
+                String done = taskLine[1];
+                String item = taskLine[2];
+                String datetime = null;
+                switch(command) {
+                case "T":
+                    ToDo todo = new ToDo("t", item);
+                    Tasks[count] = todo;
+                    break;
+                case "D":
+                    datetime = taskLine[3];
+                    Deadline deadline = new Deadline("d", item, datetime);
+                    Tasks[count] = deadline;
+                    break;
+                case "E":
+                    datetime = taskLine[3];
+                    Event event = new Event("e", item, datetime);
+                    Tasks[count] = event;
+                    break;
+                }
+                count++;
+                if (done == "1") {
+                    Tasks[count-1].setAsDone();
+                }
+            }
+            sf.close();
+        } catch (IOException e) {
+            System.out.println("Something went wrong: " + e.getMessage());
         }
     }
 
@@ -49,7 +97,7 @@ public class Duke {
         return userCommand;
     }
 
-    private static void executeUserCommand(String rawUserCommand) throws DukeException {
+    private static void executeUserCommand(String rawUserCommand) throws IOException {
         String userCommand = rawUserCommand.trim();
         String details = null;
         int dividerPosition = rawUserCommand.indexOf(" ");
@@ -85,7 +133,7 @@ public class Duke {
         }
     }
 
-    private static void addToList(String command, String details) {
+    private static void addToList(String command, String details) throws IOException {
         if (command.equals("todo")) {
             ToDo todo = new ToDo("t", details);
             Tasks[count] = todo;
@@ -115,6 +163,19 @@ public class Duke {
         System.out.println("Got it! I've added this task:");
         System.out.println("    " + Tasks[count-1]);
         System.out.println("Now you have " + count + " tasks in the list");
+        addToFile();
+    }
+
+    public static void addToFile() throws IOException {
+        String pathName = "./data/tasks.txt";
+        FileWriter fw = new FileWriter(pathName, true);
+        String taskToFile = taskToFileFormat(count);
+        if (count == 1) {
+            fw.write(taskToFile);
+        } else {
+            fw.write("\n" + taskToFile);
+        }
+        fw.close();
     }
 
     private static void displayList() {
@@ -127,11 +188,48 @@ public class Duke {
         }
     }
 
-    public static void setAsDone(int taskNumber){
+    public static void setAsDone(int taskNumber) throws IOException {
         Task task = Tasks[taskNumber-1];
         task.setAsDone();
         System.out.println("Nice! I've marked this task as done:\n"
                 + "    " + task);
+        appendFile();
+    }
+
+    public static void appendFile() throws IOException {
+        String tempPath = "./data/temp.txt";
+        String pathName = "./data/tasks.txt";
+        File tempFile = new File(tempPath);
+        File file = new File(pathName);
+        tempFile.createNewFile();
+        FileWriter fw = new FileWriter(tempPath, true);
+        for (int i=0; i<count; i++) {
+            String taskLine = taskToFileFormat(i+1);
+            if (i == 0) {
+                fw.write(taskLine);
+            } else {
+                fw.write("\n" + taskLine);
+            }
+        }
+        fw.close();
+        Files.delete(Paths.get(pathName));
+        tempFile.renameTo(file);
+    }
+
+    public static String taskToFileFormat(int taskNumber) {
+        Task task = Tasks[taskNumber-1];
+        String category = task.getCategory().toUpperCase();
+        int taskDone = task.getDone() ? 1 : 0;
+        String details = task.getDescription();
+        String datetime = null;
+        if (category.equals("T")) {
+            return "T | " + taskDone + " | " + details;
+        } else if (category.equals("D")) {
+            datetime = ((Deadline) task).getBy();
+        } else if (category.equals("E")) {
+            datetime = ((Event) task).getAt();
+        }
+        return category + " | " + taskDone + " | " + details + "| " + datetime;
     }
 
     private static void exitProgram() {
