@@ -6,13 +6,12 @@ import duke.task.Task;
 import duke.task.ToDo;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Duke {
 
-    private static final int MAX_TASK = 100;
-
     // List of all tasks
-    private static Task[] Tasks = new Task[MAX_TASK];
+    private static ArrayList<Task> tasks = new ArrayList<>();
 
     // Total number of tasks in the list
     private static int count = 0;
@@ -69,6 +68,9 @@ public class Duke {
                 DukeException.printEmptyDescription(userCommand);
             }
             break;
+        case "delete":
+            deleteFromList(userCommand, details);
+            break;
         case "list":
             displayList();
             break;
@@ -88,7 +90,7 @@ public class Duke {
     private static void addToList(String command, String details) {
         if (command.equals("todo")) {
             ToDo todo = new ToDo("t", details);
-            Tasks[count] = todo;
+            tasks.add(todo);
         } else {
             String item = null;
             String datetime = null;
@@ -99,11 +101,11 @@ public class Duke {
                 switch(command) {
                 case "deadline":
                     Deadline deadline = new Deadline("d", item, datetime);
-                    Tasks[count] = deadline;
+                    tasks.add(deadline);
                     break;
                 case "event":
                     Event event = new Event("e", item, datetime);
-                    Tasks[count] = event;
+                    tasks.add(event);
                     break;
                 }
             } else {
@@ -113,22 +115,42 @@ public class Duke {
         }
         count++;
         System.out.println("Got it! I've added this task:");
-        System.out.println("    " + Tasks[count-1]);
+        System.out.println("    " + tasks.get(count-1));
         System.out.println("Now you have " + count + " tasks in the list");
+    }
+
+    private static void deleteFromList(String command, String details) {
+        if (details == null) {
+            DukeException.printEmptyDescription(command);
+        } else {
+            try {
+                int taskNumber = Integer.parseInt(details);
+                String task = tasks.get(taskNumber).toString();
+                System.out.println("Got it! I've removed this task:");
+                System.out.println("    " + task);
+                tasks.remove(taskNumber);
+                count--;
+                System.out.println("Now you have " + count + " tasks in the list.");
+            } catch (NumberFormatException e) {
+                System.out.println("Please input a valid task number");
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Please input a task number between 1 and " + count);
+            }
+        }
     }
 
     private static void displayList() {
         System.out.println("Here are the tasks in your list:");
         for (int i=0; i<count; i++) {
             int taskNumber = i + 1;
-            Task task = Tasks[i];
+            Task task = tasks.get(i);
             System.out.println("    " + taskNumber + ". " + task);
             taskNumber++;
         }
     }
 
     public static void setAsDone(int taskNumber){
-        Task task = Tasks[taskNumber-1];
+        Task task = tasks.get(taskNumber - 1);
         task.setAsDone();
         System.out.println("Nice! I've marked this task as done:\n"
                 + "    " + task);
