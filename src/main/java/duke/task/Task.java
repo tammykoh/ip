@@ -16,8 +16,20 @@ public class Task {
         return (isDone ? "[\u2713]" : "[\u2718]");
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
     public void setAsDone() {
         this.isDone = true;
+    }
+
+    public boolean getDone() {
+        return isDone;
     }
 
     @Override
