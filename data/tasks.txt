@@ -3,3 +3,6 @@ T | 0 | xt
 E | 0 | hey | 123
 D | 0 | bb | 123
 T | 0 | cy
+T | 0 | find book
+T | 0 | read book
+T | 0 | dance party

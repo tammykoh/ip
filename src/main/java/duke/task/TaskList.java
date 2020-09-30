@@ -114,6 +114,22 @@ public class TaskList {
         }
     }
 
+    public static void searchList(String toFind){
+        int numOfMatches = 0;
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i=0; i<count; i++) {
+            String description = tasks.get(i).getDescription();
+            boolean check = description.contains(toFind);
+            if (check) {
+                numOfMatches++;
+                System.out.println("    " + numOfMatches + ". " + tasks.get(i));
+            }
+        }
+        if (numOfMatches == 0) {
+            System.out.println("There are no matches found.");
+        }
+    }
+
     public static int getCount() {
         return count;
     }
