@@ -9,6 +9,16 @@ public class UserInterface {
 
     private static final Scanner sc = new Scanner(System.in);
 
+    /**
+     * Reads the text entered by the user.
+     *
+     * @return userCommand (full line) entered by the user
+     */
+    public static String getUserInput() {
+        String userCommand = sc.nextLine().trim();
+        return userCommand;
+    }
+
     /** Displays the welcome message upon the start of the application. */
     public static void displayWelcomeMessage() {
         String logo = " ____        _        \n"
@@ -27,7 +37,7 @@ public class UserInterface {
 
     /** Prints a dividing line. */
     public static void printLine() {
-        System.out.println("_________________________________________________________________");
+        System.out.println("______________________________________________________________________");
     }
 
     /** Displays the goodbye message upon the termination of the application. */
@@ -35,13 +45,14 @@ public class UserInterface {
         System.out.println("Goodbye. Hope to see you again soon! :)");
     }
 
-    /**
-     * Reads the text entered by the user.
-     *
-     * @return userCommand (full line) entered by the user
-     */
-    public static String getUserInput() {
-        String userCommand = sc.nextLine();
-        return userCommand;
+    /** Prints the number of task in the list. */
+    public static void printNumberOfTask(int count) {
+        if (count == 0) {
+            System.out.println("You have no more task in the list.");
+        } else if (count == 1) {
+            System.out.println("You have 1 task in the list.");
+        } else {
+            System.out.println("You have " + count + " tasks in the list.");
+        }
     }
 }

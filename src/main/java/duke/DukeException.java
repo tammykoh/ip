@@ -19,5 +19,21 @@ public class DukeException extends Exception{
     public static void printEmptyDetails(String command) {
         System.out.println("Oops! You can't leave the date/time for " + command + " empty \u2639");
     }
+
+    /** Signals an error caused by entering a non-integer. */
+    public static void printInvalidTaskNumber() {
+        System.out.println("Please input a valid task number.");
+    }
+
+    /** Signals an error caused by entering an index that is not within the task list. */
+    public static void printOutOfRange(int count) {
+        if (count > 1) {
+            System.out.println("Please input a task number between 1 and " + count);
+        } else if (count == 1) {
+            System.out.println("Please input task number 1.");
+        } else {
+            System.out.println("You have no task in your list");
+        }
+    }
 }
 

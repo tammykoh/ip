@@ -18,7 +18,7 @@ import java.util.Scanner;
  */
 public class Storage {
 
-    private static TaskList taskList = new TaskList();
+    private static final TaskList taskList = new TaskList();
 
     /**
      * Loads a text file upon starting the program

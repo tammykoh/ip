@@ -12,12 +12,12 @@ import java.io.IOException;
  */
 public class Duke {
 
-    private static UserInterface ui = new UserInterface();
-    private static Storage storage = new Storage();
-    private static Parser parser = new Parser();
+    private static final UserInterface ui = new UserInterface();
+    private static final Storage storage = new Storage();
+    private static final Parser parser = new Parser();
 
     /**
-     * Prints the welcome message, and loads up the data from the storage file
+     * Prints the welcome message, and loads up the data from the storage file and prints ready message
      * Reads and executes user command until termination
      */
     public static void main(String[] args) throws IOException {

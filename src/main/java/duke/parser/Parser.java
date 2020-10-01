@@ -11,8 +11,8 @@ import java.io.IOException;
  */
 public class Parser {
 
-    private static UserInterface ui = new UserInterface();
-    private static TaskList taskList = new TaskList();
+    private static final UserInterface ui = new UserInterface();
+    private static final TaskList taskList = new TaskList();
 
     /**
      * Parses user input into command for execution.
@@ -20,7 +20,7 @@ public class Parser {
      * @param rawUserCommand full user input string
      */
     public static void executeUserCommand(String rawUserCommand) throws IOException {
-        String userCommand = rawUserCommand.trim();
+        String userCommand = rawUserCommand;
         String details = null;
         int dividerPosition = rawUserCommand.indexOf(" ");
         if (dividerPosition != -1) {
@@ -33,7 +33,7 @@ public class Parser {
         case "deadline":
             //Fallthrough
         case "event":
-            if (dividerPosition != -1) {
+            if (details != null) {
                 taskList.addToList(userCommand, details);
             } else {
                 DukeException.printEmptyDescription(userCommand);
@@ -43,8 +43,7 @@ public class Parser {
             taskList.displayList();
             break;
         case "done":
-            int taskNumber = Integer.parseInt(details);
-            taskList.setAsDone(taskNumber);
+            taskList.setAsDone(details);
             break;
         case "delete":
             taskList.deleteFromList(userCommand, details);
