@@ -28,40 +28,40 @@ public class Parser {
             details = rawUserCommand.substring(dividerPosition + 1);
         }
         switch(userCommand) {
-            case "todo":
-                //Fallthrough
-            case "deadline":
-                //Fallthrough
-            case "event":
-                if (dividerPosition != -1) {
-                    taskList.addToList(userCommand, details);
-                } else {
-                    DukeException.printEmptyDescription(userCommand);
-                }
-                break;
-            case "list":
-                taskList.displayList();
-                break;
-            case "done":
-                int taskNumber = Integer.parseInt(details);
-                taskList.setAsDone(taskNumber);
-                break;
-            case "delete":
-                taskList.deleteFromList(userCommand, details);
-                break;
-            case "find":
-                if (dividerPosition != -1) {
-                    taskList.searchList(details);
-                } else {
-                    DukeException.printEmptyDescription(userCommand);
-                }
-                break;
-            case "bye":
-                exitProgram();
-                break;
-            default:
-                DukeException.printInvalidCommand();
-                break;
+        case "todo":
+            //Fallthrough
+        case "deadline":
+            //Fallthrough
+        case "event":
+            if (dividerPosition != -1) {
+                taskList.addToList(userCommand, details);
+            } else {
+                DukeException.printEmptyDescription(userCommand);
+            }
+            break;
+        case "list":
+            taskList.displayList();
+            break;
+        case "done":
+            int taskNumber = Integer.parseInt(details);
+            taskList.setAsDone(taskNumber);
+            break;
+        case "delete":
+            taskList.deleteFromList(userCommand, details);
+            break;
+        case "find":
+            if (dividerPosition != -1) {
+                taskList.searchList(details);
+            } else {
+                DukeException.printEmptyDescription(userCommand);
+            }
+            break;
+        case "bye":
+            exitProgram();
+            break;
+        default:
+            DukeException.printInvalidCommand();
+            break;
         }
     }
 

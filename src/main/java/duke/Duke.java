@@ -23,7 +23,9 @@ public class Duke {
     public static void main(String[] args) throws IOException {
         ui.displayWelcomeMessage();
         storage.loadTextFile();
+        ui.displayReadyMessage();
         while (true) {
+            ui.printLine();
             String userCommand = ui.getUserInput();
             parser.executeUserCommand(userCommand);
         }

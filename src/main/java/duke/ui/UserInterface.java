@@ -16,7 +16,18 @@ public class UserInterface {
                 + "| | | | | | | |/ / _ \\\n"
                 + "| |_| | |_| |   <  __/\n"
                 + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println(logo + "Hey there! I'm Duke.\n" + "How may I be of service?");
+        System.out.println(logo + "Hey there! I'm Duke.");
+        printLine();
+    }
+
+    /** Displays the ready message once the file has been set-up. */
+    public static void displayReadyMessage() {
+        System.out.println("We're set and ready to go. What would you like me to do?");
+    }
+
+    /** Prints a dividing line. */
+    public static void printLine() {
+        System.out.println("_________________________________________________________________");
     }
 
     /** Displays the goodbye message upon the termination of the application. */

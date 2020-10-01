@@ -31,9 +31,10 @@ public class Storage {
             folder.mkdir();
         }
         if (file.exists()) {
+            System.out.println("Loading existing file...");
             readTextFile(file);
         } else {
-            System.out.println("File does not exist. Creating file...");
+            System.out.println("Seems like you're new here. No worries! Your file is being created...");
             file.createNewFile();
         }
     }

@@ -28,19 +28,19 @@ public class TaskList {
         } else {
             String item = null;
             String datetime = null;
-            int dividerPosition2 = details.indexOf("/");
-            if (dividerPosition2 != -1) {
-                item = details.substring(0, dividerPosition2);
-                datetime = details.substring(dividerPosition2 + 4);
+            int dividerPosition = details.indexOf("/");
+            if (dividerPosition != -1) {
+                item = details.substring(0, dividerPosition);
+                datetime = details.substring(dividerPosition + 4);
                 switch(command) {
-                    case "deadline":
-                        Deadline deadline = new Deadline("d", item, datetime);
-                        tasks.add(deadline);
-                        break;
-                    case "event":
-                        Event event = new Event("e", item, datetime);
-                        tasks.add(event);
-                        break;
+                case "deadline":
+                    Deadline deadline = new Deadline("d", item, datetime);
+                    tasks.add(deadline);
+                    break;
+                case "event":
+                    Event event = new Event("e", item, datetime);
+                    tasks.add(event);
+                    break;
                 }
             } else {
                 DukeException.printEmptyDetails(command);
@@ -64,20 +64,20 @@ public class TaskList {
         String item = taskLine[2];
         String datetime = null;
         switch(command) {
-            case "T":
-                ToDo todo = new ToDo("t", item);
-                tasks.add(todo);
-                break;
-            case "D":
-                datetime = taskLine[3];
-                Deadline deadline = new Deadline("d", item, datetime);
-                tasks.add(deadline);
-                break;
-            case "E":
-                datetime = taskLine[3];
-                Event event = new Event("e", item, datetime);
-                tasks.add(event);
-                break;
+        case "T":
+            ToDo todo = new ToDo("t", item);
+            tasks.add(todo);
+            break;
+        case "D":
+            datetime = taskLine[3];
+            Deadline deadline = new Deadline("d", item, datetime);
+            tasks.add(deadline);
+            break;
+        case "E":
+            datetime = taskLine[3];
+            Event event = new Event("e", item, datetime);
+            tasks.add(event);
+            break;
         }
         count++;
         if (done == "1") {
@@ -91,20 +91,26 @@ public class TaskList {
     public static void deleteFromList(String command, String details) {
         if (details == null) {
             DukeException.printEmptyDescription(command);
-        } else {
-            try {
-                int taskNumber = Integer.parseInt(details);
-                String task = tasks.get(taskNumber-1).toString();
-                System.out.println("Got it! I've removed this task:");
-                System.out.println("    " + task);
-                tasks.remove(taskNumber-1);
-                count--;
-                System.out.println("Now you have " + count + " tasks in the list.");
-            } catch (NumberFormatException e) {
-                System.out.println("Please input a valid task number");
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println("Please input a task number between 1 and " + count);
+            return;
+        }
+        try {
+            int taskNumber = Integer.parseInt(details);
+            String task = tasks.get(taskNumber - 1).toString();
+            System.out.println("Got it! I've removed this task:");
+            System.out.println("    " + task);
+            tasks.remove(taskNumber - 1);
+            count--;
+            if (count == 0) {
+                System.out.println("You have no more task in the list.");
+            } else if (count == 1) {
+                System.out.println("You have 1 task in the list.");
+            } else {
+                System.out.println("You have " + count + " tasks in the list.");
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Please input a valid task number");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Please input a task number between 1 and " + count);
         }
     }
 
@@ -123,7 +129,13 @@ public class TaskList {
      * Displays the entire Task List.
      */
     public static void displayList() {
-        System.out.println("Here are the tasks in your list:");
+        if (count == 0) {
+            System.out.println("You have no task in your list.");
+        } else if (count == 1) {
+            System.out.println("Here is the task in your list:");
+        } else {
+            System.out.println("Here are the tasks in your list:");
+        }
         for (int i=0; i<count; i++) {
             int taskNumber = i + 1;
             Task task = tasks.get(i);
@@ -134,7 +146,7 @@ public class TaskList {
 
     public static void searchList(String toFind){
         int numOfMatches = 0;
-        System.out.println("Here are the matching tasks in your list:");
+        System.out.println("Here are the matching task(s) in your list:");
         for (int i=0; i<count; i++) {
             String description = tasks.get(i).getDescription();
             boolean check = description.contains(toFind);
@@ -144,7 +156,7 @@ public class TaskList {
             }
         }
         if (numOfMatches == 0) {
-            System.out.println("There are no matches found.");
+            System.out.println("    --- no matches found ---    ");
         }
     }
 
