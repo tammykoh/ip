@@ -13,10 +13,17 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Represents the file used to store address book data.
+ */
 public class Storage {
 
     private static TaskList taskList = new TaskList();
 
+    /**
+     * Loads a text file upon starting the program
+     * Creates a text file if the text file does not exist
+     */
     public static void loadTextFile() throws IOException {
         File file = new File("./data/tasks.txt");
         File folder = new File("./data");
@@ -31,6 +38,9 @@ public class Storage {
         }
     }
 
+    /**
+     * Reads the text file line by line and adds each task to TaskList
+     */
     private static void readTextFile(File file) {
         try {
             Scanner sf = new Scanner(file);
@@ -43,6 +53,7 @@ public class Storage {
         }
     }
 
+    /** Saves the new task in TaskList to the storage file. */
     public static void addToFile() throws IOException {
         int count = TaskList.getCount();
         String pathName = "./data/tasks.txt";
@@ -56,6 +67,7 @@ public class Storage {
         fw.close();
     }
 
+    /** Appends the file when a task in TaskList has been done or deleted. */
     public static void appendFile() throws IOException {
         int count = TaskList.getCount();
         String tempPath = "./data/temp.txt";
@@ -77,6 +89,12 @@ public class Storage {
         tempFile.renameTo(file);
     }
 
+    /**
+     * Converts a task from the TaskList into a certain format to store in a file
+     *
+     * @param taskNumber task that needs to be converted into storing format
+     * @return the data in string format
+     */
     public static String taskToFileFormat(int taskNumber) {
         ArrayList<Task> tasks = taskList.getArrayList();
         String category = tasks.get(taskNumber-1).getCategory().toUpperCase();

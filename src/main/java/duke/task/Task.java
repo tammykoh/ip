@@ -1,5 +1,8 @@
 package duke.task;
 
+/**
+ * Represents a Task in the Task List.
+ */
 public class Task {
     protected String category;
     protected String description;
@@ -11,8 +14,10 @@ public class Task {
         this.isDone = false;
     }
 
+    /**
+     * Returns TICK_SYMBOL if task is completed and CROSS_SYMBOL if it is not complete.
+     */
     public String getStatusIcon() {
-        //return tick or X symbols
         return (isDone ? "[\u2713]" : "[\u2718]");
     }
 

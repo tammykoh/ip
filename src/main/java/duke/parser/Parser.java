@@ -6,11 +6,19 @@ import duke.ui.UserInterface;
 
 import java.io.IOException;
 
+/**
+ * Parses user input.
+ */
 public class Parser {
 
     private static UserInterface ui = new UserInterface();
     private static TaskList taskList = new TaskList();
 
+    /**
+     * Parses user input into command for execution.
+     *
+     * @param rawUserCommand full user input string
+     */
     public static void executeUserCommand(String rawUserCommand) throws IOException {
         String userCommand = rawUserCommand.trim();
         String details = null;
@@ -50,6 +58,7 @@ public class Parser {
         }
     }
 
+    /** Displays goodbye and terminates the program */
     private static void exitProgram() {
         ui.displayGoodbyeMessage();
         System.exit(0);

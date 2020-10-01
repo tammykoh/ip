@@ -6,15 +6,21 @@ import duke.storage.Storage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Represents and contains the data of the entire Task List.
+ */
 public class TaskList {
 
     public static ArrayList<Task> tasks = new ArrayList<>();
 
-    // Total number of tasks in the list
+    /** Total number of tasks in the list */
     private static int count = 0;
 
     private static Storage storage = new Storage();
 
+    /**
+     * Adds a task to the Task List.
+     */
     public static void addToList(String command, String details) throws IOException {
         if (command.equals("todo")) {
             ToDo todo = new ToDo("t", details);
@@ -48,6 +54,9 @@ public class TaskList {
         storage.addToFile();
     }
 
+    /**
+     * Adds existing task from file to the Task List upon starting the application.
+     */
     public static void addTextToList(String fileLine) {
         String[] taskLine = fileLine.split(" \\| ");
         String command = taskLine[0];
@@ -76,6 +85,9 @@ public class TaskList {
         }
     }
 
+    /**
+     * Deletes a task to the Task List.
+     */
     public static void deleteFromList(String command, String details) {
         if (details == null) {
             DukeException.printEmptyDescription(command);
@@ -96,6 +108,9 @@ public class TaskList {
         }
     }
 
+    /**
+     * Sets a task as done in the Task List.
+     */
     public static void setAsDone(int taskNumber) throws IOException {
         Task task = tasks.get(taskNumber - 1);
         task.setAsDone();
@@ -104,6 +119,9 @@ public class TaskList {
         storage.appendFile();
     }
 
+    /**
+     * Displays the entire Task List.
+     */
     public static void displayList() {
         System.out.println("Here are the tasks in your list:");
         for (int i=0; i<count; i++) {
