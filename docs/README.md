@@ -5,7 +5,7 @@ Duke is a desktop app for managing tasks, optimized for use via a Command Line I
 ## Quick Start
 
 1. Ensure you have **Java 11** or above installed in your computer
-1. Download the latest duke.jar from [here](https://github.com/tammykoh/ip/releases/tag/v1.0)
+1. Download the latest duke.jar from [here](https://github.com/tammykoh/ip/releases/tag/A-Release)
 1. Copy the file to the folder you want to use as the home folder for Duke.
 1. Follow the following steps to start up Duke. If the setup is correct, you should see something like the following on your first launch:
    1. Open Command Prompt
