@@ -31,15 +31,22 @@ public class Parser {
                     DukeException.printEmptyDescription(userCommand);
                 }
                 break;
-            case "delete":
-                taskList.deleteFromList(userCommand, details);
-                break;
             case "list":
                 taskList.displayList();
                 break;
             case "done":
                 int taskNumber = Integer.parseInt(details);
                 taskList.setAsDone(taskNumber);
+                break;
+            case "delete":
+                taskList.deleteFromList(userCommand, details);
+                break;
+            case "find":
+                if (dividerPosition != -1) {
+                    taskList.searchList(details);
+                } else {
+                    DukeException.printEmptyDescription(userCommand);
+                }
                 break;
             case "bye":
                 exitProgram();
