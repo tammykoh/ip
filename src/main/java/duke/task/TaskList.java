@@ -80,7 +80,7 @@ public class TaskList {
             break;
         }
         count++;
-        if (done == "1") {
+        if (done.equals("1")) {
             tasks.get(count-1).setAsDone();
         }
     }

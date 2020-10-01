@@ -109,6 +109,6 @@ public class Storage {
         } else if (category.equals("E")) {
             datetime = ((Event) tasks.get(taskNumber-1)).getAt();
         }
-        return category + " | " + taskDone + " | " + details + "| " + datetime;
+        return category + " | " + taskDone + " | " + details + " | " + datetime;
     }
 }
