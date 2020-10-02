@@ -46,7 +46,7 @@ public class Parser {
             taskList.setAsDone(details);
             break;
         case "delete":
-            taskList.deleteFromList(userCommand, details);
+            taskList.deleteFromList(details);
             break;
         case "find":
             if (dividerPosition != -1) {
@@ -64,7 +64,7 @@ public class Parser {
         }
     }
 
-    /** Displays goodbye and terminates the program */
+    /** Displays goodbye message and terminates the program */
     private static void exitProgram() {
         ui.displayGoodbyeMessage();
         System.exit(0);

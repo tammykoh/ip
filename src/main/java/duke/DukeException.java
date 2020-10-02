@@ -16,7 +16,16 @@ public class DukeException extends Exception{
     }
 
     /** Signals an error caused by the lack of /at or /by for the event and deadline respectively. */
-    public static void printEmptyDetails(String command) {
+    public static void printMissingIdentifier(String command) {
+        if (command.equals("deadline")) {
+            System.out.println("Oops! We can't seem to find '/by' for " + command + " \u2639");
+        } else {
+            System.out.println("Oops! We can't seem to find '/at' for " + command + " \u2639");
+        }
+    }
+
+    /** Signals an error caused by an empty date/time field. */
+    public static void printEmptyDateTime(String command) {
         System.out.println("Oops! You can't leave the date/time for " + command + " empty \u2639");
     }
 

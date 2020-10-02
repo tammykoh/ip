@@ -14,7 +14,7 @@ import static java.lang.Integer.parseInt;
  */
 public class TaskList {
 
-    public static ArrayList<Task> tasks = new ArrayList<>();
+    private static ArrayList<Task> tasks = new ArrayList<>();
 
     /** Total number of tasks in the list */
     private static int count = 0;
@@ -23,6 +23,9 @@ public class TaskList {
 
     /**
      * Adds a task to the Task List.
+     *
+     * @param command the action the user wants Duke to perform
+     * @param details the details of the task the user wants to add
      */
     public static void addToList(String command, String details) throws IOException {
         if (command.equals("todo")) {
@@ -30,8 +33,17 @@ public class TaskList {
             tasks.add(todo);
         } else {
             String item, datetime;
-            int dividerPosition = details.indexOf("/");
-            if (dividerPosition != -1) {
+            int dividerPosition = -1;
+            if (command.equals("deadline")) {
+                dividerPosition = details.indexOf("/by");
+            } else if (command.equals("event")) {
+                dividerPosition = details.indexOf("/at");
+            }
+            if (dividerPosition == -1) {
+                DukeException.printMissingIdentifier(command);
+                return;
+            }
+            try {
                 item = details.substring(0, dividerPosition);
                 datetime = details.substring(dividerPosition + 4);
                 switch(command) {
@@ -44,8 +56,8 @@ public class TaskList {
                     tasks.add(event);
                     break;
                 }
-            } else {
-                DukeException.printEmptyDetails(command);
+            } catch (StringIndexOutOfBoundsException e) {
+                DukeException.printEmptyDateTime(command);
                 return;
             }
         }
@@ -58,8 +70,10 @@ public class TaskList {
 
     /**
      * Adds existing task from file to the Task List upon starting the application.
+     *
+     * @param fileLine a single line in the file that is to be added to the Task List
      */
-    public static void addTextToList(String fileLine) {
+    public static void addTextToList (String fileLine) {
         String[] taskLine = fileLine.split(" \\| ");
         String command = taskLine[0];
         String done = taskLine[1];
@@ -89,10 +103,12 @@ public class TaskList {
 
     /**
      * Deletes a task to the Task List.
+     *
+     * @param details the number of the task to be deleted
      */
-    public static void deleteFromList(String command, String details) {
+    public static void deleteFromList(String details) {
         if (details == null) {
-            DukeException.printEmptyDescription(command);
+            DukeException.printEmptyDescription("delete");
             return;
         }
         try {
@@ -115,8 +131,14 @@ public class TaskList {
 
     /**
      * Sets a task as done in the Task List.
+     *
+     * @param details the number of the task to be marked as done
      */
     public static void setAsDone(String details) throws IOException {
+        if (details == null) {
+            DukeException.printEmptyDescription("done");
+            return;
+        }
         try {
             int taskNumber = parseInt(details);
             Task task = tasks.get(taskNumber - 1);
@@ -149,12 +171,17 @@ public class TaskList {
         }
     }
 
-    public static void searchList(String toFind){
+    /**
+     * Searches for tasks in the Task List using a given keyword.
+     *
+     * @param keyword the word(s) to find in the Task List
+     */
+    public static void searchList(String keyword){
         int numOfMatches = 0;
         System.out.println("Here are the matching tasks in your list:");
         for (int i=0; i<count; i++) {
             String description = tasks.get(i).getDescription();
-            boolean check = description.contains(toFind);
+            boolean check = description.contains(keyword);
             if (check) {
                 numOfMatches++;
                 System.out.println("    " + numOfMatches + ". " + tasks.get(i));

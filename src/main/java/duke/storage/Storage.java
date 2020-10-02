@@ -23,6 +23,8 @@ public class Storage {
     /**
      * Loads a text file upon starting the program
      * Creates a text file if the text file does not exist
+     *
+     * @throws IOException if file path is invalid
      */
     public static void loadTextFile() throws IOException {
         File file = new File("./data/tasks.txt");

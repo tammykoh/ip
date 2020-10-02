@@ -9,7 +9,7 @@ Duke is a desktop app for managing tasks, optimized for use via a Command Line I
 1. Copy the file to the folder you want to use as the home folder for Duke.
 1. Follow the following steps to start up Duke. If the setup is correct, you should see something like the following on your first launch:
    1. Open Command Prompt
-   1. Navigate to the folder with the jar file
+   1. Navigate to the folder with the jar file (eg. `cd Desktop`)
    1. Enter `java -jar duke.jar`
    ```
     ____        _        
